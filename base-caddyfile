@@ -14,6 +14,12 @@
     respond "hi"
   }
 }
+(defaults_nossl) {
+  encode zstd gzip
+  log {
+    output stdout
+  }
+}
 (defaults) {
   tls {$LE_EMAIL}
   encode zstd gzip
@@ -27,7 +33,7 @@
     output stdout
   }
 }
-https://{$ZONE}, http://{$HOSTNAME} {
+https://{$ZONE} {
   import defaults
   @public {
     not {
