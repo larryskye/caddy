@@ -29,7 +29,11 @@
 }
 https://{$ZONE}, http://{$HOSTNAME} {
   import defaults
-  import public
+  @public {
+    not {
+      remote_ip {$LAN_RANGE}
+    }
+  }
   handle @public {
     root * /www/public
     file_server
