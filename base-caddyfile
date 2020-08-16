@@ -1,0 +1,40 @@
+{
+  http_port 80
+  https_port 443
+  admin {$HOSTNAME}:2019
+  email {$EMAIL}
+}
+(internal_only) {
+  @public {
+    not {
+      remote_ip {$WAN_IP} {$LAN_RANGE} {$EXTRA}
+    }
+  }
+  handle @public {
+    respond "hi"
+  }
+}
+(defaults) {
+  tls {$LE_EMAIL}
+  encode zstd gzip
+  log {
+    output stdout
+  }
+}
+(tls) {
+  tls {$LE_EMAIL}
+  log {
+    output stdout
+  }
+}
+https://{$ZONE}, http://{$HOSTNAME} {
+  import defaults
+  import public
+  handle @public {
+    root * /www/public
+    file_server
+  }
+  root * /www/internal
+  file_server
+}
+
