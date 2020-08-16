@@ -33,6 +33,10 @@
     output stdout
   }
 }
+(proxy_options) {
+  header_up X-Real-IP {remote_host}
+  header_up X-Forwarded-Proto {scheme}
+}
 https://{$ZONE} {
   import defaults
   @public {
