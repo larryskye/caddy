@@ -23,7 +23,7 @@ services:
       EMAIL: "${EMAIL}"
       LAN_RANGE: "${LAN_RANGE}"
       WAN_IP: "${WAN_IP}"
-      EXTRA: "${EXTRA}"
+      EXTRA_IP: "${EXTRA_IP}"
       LE_EMAIL: "${LE_EMAIL}"
       HOSTNAME: "${HOSTNAME}"
     healthcheck:
@@ -31,3 +31,7 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://127.0.0.1:12201"

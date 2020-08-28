@@ -7,7 +7,7 @@
 (internal_only) {
   @public {
     not {
-      remote_ip {$WAN_IP} {$LAN_RANGE} {$EXTRA}
+      remote_ip {$WAN_IP} {$LAN_RANGE} {$EXTRA_IP}
     }
   }
   handle @public {
@@ -16,22 +16,13 @@
 }
 (defaults_nossl) {
   encode zstd gzip
-  log {
-    output stdout
-  }
 }
 (defaults) {
   tls {$LE_EMAIL}
   encode zstd gzip
-  log {
-    output stdout
-  }
 }
 (tls) {
   tls {$LE_EMAIL}
-  log {
-    output stdout
-  }
 }
 (proxy_options) {
   header_up X-Real-IP {remote_host}
@@ -39,6 +30,9 @@
 }
 https://{$ZONE} {
   import defaults
+  log {
+    output stdout
+  }
   @public {
     not {
       remote_ip {$LAN_RANGE}
@@ -46,9 +40,9 @@ https://{$ZONE} {
   }
   handle @public {
     root * /www/public
-    file_server
+    templates
   }
   root * /www/internal
-  file_server
+  file_server browse
 }
 
